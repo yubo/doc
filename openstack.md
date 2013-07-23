@@ -1,6 +1,8 @@
-# openstack 简介
+# openstack(folsom) 简介
 
 ## 模块
+
+![Alt text][logical_architecture_img]
 
  - Identity(Keystone) 为所有的OpenStack服务提供身份验证,授权,服务目录。
  - Image Service(Glance) 是一个虚拟机镜像的存储、查询和检索系统，它提供了一个虚拟磁盘映像的目录和存储库，这些磁盘映像常常广泛应用于OpenStack Compute之中，而且这种服务在技术上是属于可选的，任何规模的云都适用于它。
@@ -503,12 +505,16 @@ root@lg-op-paas02:/etc/init.d# nova list
 # nova reset-state --active <server_name/server_id> # the state of instance will be changed to “ACTIVE” At this time, we can stop the instance, and start it again as usual.
 # nova stop <server_name/server_id> # the state of instance will be changed to “SHUTOFF”
 # nova start <server_name/server_id> # the state of instance will be changed to “ACTIVE”
-
-# vm
-nova list
-
-#
-
-
-
 ```
+
+
+## 资源
+
+ * [Administration_Guide][]
+ * [block_storage][]
+ *
+
+[Administration_Guide]:http://docs.openstack.org/folsom/openstack-compute/admin/content/
+[block_storage]:http://www.rackspace.com/knowledge_center/article/configuring-openstack-block-storage
+[logical_architecture_img]:http://docs.openstack.org/folsom/openstack-compute/admin/content/figures/openstack-logical-arch-folsom.jpg
+
