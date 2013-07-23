@@ -323,10 +323,29 @@ cinder-manage db sync
   PV         VG             Fmt  Attr PSize   PFree  
   /dev/sda8  cinder-volumes lvm2 a--  235.05g 235.05g
 
+
+# tgt
+root@lg-op-paas02:~/folsom# cat /etc/tgt/targets.conf 
+include /etc/tgt/conf.d/*.conf
+root@lg-op-paas02:~/folsom# cat /etc/tgt/conf.d/cinder_tgt.conf 
+include /var/lib/cinder/volumes/*
+service
+
+```
+
+
+
+
+
+
 ##### openstack-dashboard(web gui)
+
 ...
 
+
 ##### Compute Node(nova)
+
+```
 nova-api ->　nova-api-metadata 
 ...
 ```
@@ -341,17 +360,19 @@ nova-manage network create --label=NimbulaNetwork --fixed_range_v4=10.21.100.64/
 
 glance add name="Ubuntu12.04-amd64" is_public=true container_format=ovf disk_format=qcow2 < precise-server-cloudimg-amd64-disk1.img
 
-nova-mange network list
+root@lg-op-paas02:~# nova-manage network list
+id      IPv4                    IPv6            start address   DNS1            DNS2            VlanID          project         uuid           
+3       10.21.100.64/27         None            10.21.100.66    10.237.8.8      None            None            b571884d294948dfb504361ab2515f4f        5b704280-ba67-41b2-9ed6-75d2d26abcd0
 #nova-mange floating list
 
-# 申请key
+##################### 申请key
 # 如果没有权限,先定义环境变量 source creds
 nova keypair-add xae > xae.priv
 
-# 查看机器模板
+##################### 查看机器模板
 nova flavor-list
 
-# 申请实例
+##################### 申请实例
 nova boot --flavor 2 --key_name xae --image b36b7e19-ea61-447f-9970-00424b77c299 bosh-cli
 
 
@@ -363,10 +384,131 @@ root@lg-op-paas02:~/folsom# nova list
 | bdde8496-89c6-4e73-9c1d-b94dc1f7c74e | xae00    | ACTIVE | NimbulaNetwork=10.21.100.68, 1.0.0.8 |
 +--------------------------------------+----------+--------+--------------------------------------+
 
-# acl
+##################### acl
 nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
 nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
+nova secgroup-list-rules default
++-------------+-----------+---------+-----------+--------------+
+| IP Protocol | From Port | To Port | IP Range  | Source Group |
++-------------+-----------+---------+-----------+--------------+
+| icmp        | -1        | -1      | 0.0.0.0/0 |              |
+| tcp         | 1         | 65535   | 0.0.0.0/0 |              |
+| tcp         | 22        | 22      | 0.0.0.0/0 |              |
+| udp         | 1         | 65535   | 0.0.0.0/0 |              |
++-------------+-----------+---------+-----------+--------------+
+
+
+##################### cinder
+
+root@lg-op-paas02:~/folsom# cinder create --display_name test 1
++---------------------+--------------------------------------+
+|       Property      |                Value                 |
++---------------------+--------------------------------------+
+|     attachments     |                  []                  |
+|  availability_zone  |                 nova                 |
+|      created_at     |      2013-07-23T03:55:16.875308      |
+| display_description |                 None                 |
+|     display_name    |                 test                 |
+|          id         | a3c7be71-48ce-4228-bde3-39146dd88f1f |
+|       metadata      |                  {}                  |
+|         size        |                  1                   |
+|     snapshot_id     |                 None                 |
+|        status       |               creating               |
+|     volume_type     |                 None                 |
++---------------------+--------------------------------------+
+
+root@lg-op-paas02:~/src/openstack_folsom_deploy# cinder list
++--------------------------------------+-----------+--------------+------+-------------+-------------+
+|                  ID                  |   Status  | Display Name | Size | Volume Type | Attached to |
++--------------------------------------+-----------+--------------+------+-------------+-------------+
+| a3c7be71-48ce-4228-bde3-39146dd88f1f | available |     test     |  1   |     None    |             |
++--------------------------------------+-----------+--------------+------+-------------+-------------+
+
+root@lg-op-paas02:~/src/openstack_folsom_deploy# nova volume-attach 5edbb336-b47b-45fb-a3dc-7ec322c530d8 a3c7be71-48ce-4228-bde3-39146dd88f1f auto
++----------+--------------------------------------+
+| Property | Value                                |
++----------+--------------------------------------+
+| device   | /dev/vdb                             |
+| id       | a3c7be71-48ce-4228-bde3-39146dd88f1f |
+| serverId | 5edbb336-b47b-45fb-a3dc-7ec322c530d8 |
+| volumeId | a3c7be71-48ce-4228-bde3-39146dd88f1f |
++----------+--------------------------------------+
+
+root@bosh-cli:~# fdisk -l          
+
+Disk /dev/vda: 21.5 GB, 21474836480 bytes
+255 heads, 63 sectors/track, 2610 cylinders, total 41943040 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/vda1   *       16065    41929649    20956792+  83  Linux
+
+Disk /dev/vdb: 1073 MB, 1073741824 bytes
+16 heads, 63 sectors/track, 2080 cylinders, total 2097152 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+Disk /dev/vdb doesn't contain a valid partition table
+
+
+
 
 ssh -i xae.priv root@10.21.100.66
 ```
 
+
+
+
+
+
+## 重启之后
+
+
+##### 检查服务状态
+
+```
+#keystone
+service keystone status
+
+#nova
+cd /etc/init.d/; for i in $(ls nova-*); do sudo service $i status; done
+
+#cinder
+cd /etc/init.d/; for i in $(ls cinder-*); do sudo service $i status; done
+
+
+# nova list
+root@lg-op-paas02:/etc/init.d# nova list
++--------------------------------------+----------+---------+--------------------------------------+
+| ID                                   | Name     | Status  | Networks                             |
++--------------------------------------+----------+---------+--------------------------------------+
+| 5edbb336-b47b-45fb-a3dc-7ec322c530d8 | bosh-cli | SHUTOFF | NimbulaNetwork=10.21.100.66          |
+| bdde8496-89c6-4e73-9c1d-b94dc1f7c74e | xae00    | SHUTOFF | NimbulaNetwork=10.21.100.68, 1.0.0.8 |
++--------------------------------------+----------+---------+--------------------------------------+
+root@lg-op-paas02:/etc/init.d# nova start bosh-cli
+root@lg-op-paas02:/etc/init.d# nova list
++--------------------------------------+----------+---------+--------------------------------------+
+| ID                                   | Name     | Status  | Networks                             |
++--------------------------------------+----------+---------+--------------------------------------+
+| 5edbb336-b47b-45fb-a3dc-7ec322c530d8 | bosh-cli | ACTIVE  | NimbulaNetwork=10.21.100.66          |
+| bdde8496-89c6-4e73-9c1d-b94dc1f7c74e | xae00    | SHUTOFF | NimbulaNetwork=10.21.100.68, 1.0.0.8 |
++--------------------------------------+----------+---------+--------------------------------------+
+
+# nova reset-state <server_name/server_id> # the state of instance will be changed to “ERROR”
+# nova reset-state --active <server_name/server_id> # the state of instance will be changed to “ACTIVE” At this time, we can stop the instance, and start it again as usual.
+# nova stop <server_name/server_id> # the state of instance will be changed to “SHUTOFF”
+# nova start <server_name/server_id> # the state of instance will be changed to “ACTIVE”
+
+# vm
+nova list
+
+#
+
+
+
+```
