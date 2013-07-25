@@ -16,6 +16,9 @@
 ##### keystone(身份验证,授权)
 
 ```
+# install
+apt-get install keystone
+
 #mysql
 CREATE DATABASE keystone;
 GRANT ALL ON keystone.* TO 'keystoneUser'@'10.21.100.22' IDENTIFIED BY 'keystonePass';
@@ -27,6 +30,18 @@ connection = mysql://keystoneUser:keystonePass@10.21.100.22/keystone
 service keystone restart
 keystone-manage db_sync
 
+
+cat > creds << 'EOF'
+export OS_NO_CACHE=1
+export SERVICE_TOKEN=ADMIN
+export OS_TENANT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=admin_pass
+export OS_AUTH_URL="http://10.21.100.22:5000/v2.0/"
+EOF
+source creds
+
+ 
 root@lg-op-paas02:~/folsom# keystone tenant-list
 +----------------------------------+---------+---------+
 |                id                |   name  | enabled |
@@ -118,17 +133,7 @@ root@lg-op-paas02:~/folsom# keystone endpoint-list
 +----------------------------------+-----------+-------------------------------------------+-------------------------------------------+-------------------------------------------+
 ```
 
-```
-cat > creds << 'EOF'
-export OS_NO_CACHE=1
-export SERVICE_TOKEN=ADMIN
-export OS_TENANT_NAME=admin
-export OS_USERNAME=admin
-export OS_PASSWORD=admin_pass
-export OS_AUTH_URL="http://10.21.100.22:5000/v2.0/"
-EOF
-source creds
-```
+
 
 
 ```
@@ -237,7 +242,7 @@ root@lg-op-paas02:~/folsom# glance image-list
 +--------------------------------------+-------------------------------------------+-------------+------------------+------------+--------+
 ```
 
-##### networking(nova-network/quantum)
+##### nova (nova-network/quantum)
 
 ```
 apt-get install -y bridge-utils
@@ -331,8 +336,7 @@ root@lg-op-paas02:~/folsom# cat /etc/tgt/targets.conf
 include /etc/tgt/conf.d/*.conf
 root@lg-op-paas02:~/folsom# cat /etc/tgt/conf.d/cinder_tgt.conf 
 include /var/lib/cinder/volumes/*
-service
-
+service tgt restart
 ```
 
 
@@ -352,6 +356,11 @@ nova-api ->　nova-api-metadata
 ...
 ```
 
+##### storage node(cinder)
+
+ - <del>cinder-api<del>
+ - <del>cinder-scheduler<del>
+ - cinder-volume
 
 
 ## 一个例子
@@ -512,7 +521,7 @@ root@lg-op-paas02:/etc/init.d# nova list
 
  * [Administration_Guide][]
  * [block_storage][]
- *
+ 
 
 [Administration_Guide]:http://docs.openstack.org/folsom/openstack-compute/admin/content/
 [block_storage]:http://www.rackspace.com/knowledge_center/article/configuring-openstack-block-storage
