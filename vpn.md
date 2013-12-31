@@ -138,6 +138,7 @@ ifup wan
 
 ##### server on ubuntu
 
+```
 #check gre
 
 apt-get install pptpd
@@ -165,36 +166,10 @@ EOF
 cat >> /etc/rc.local << 'EOF
 iptables -t nat -A POSTROUTING -s 172.16.0.0/16 -o eth0 -j MASQUERADE
 EOF
-
-
-
-
-##### clinet on ubuntu
-
-```
-cat >> /etc/ppp/chap-secrets << 'EOF'
-usr * pwd *
-EOF
-
-
-cat > /etc/ppp/peers/pptp << 'EOF'
-pty "pptp 1.0.2.3 --nolaunchpppd"
-name usr
-remotename pptp
-require-mppe-128
-mppe-stateful
-file /etc/ppp/options.pptp
-ipparam pptp
-defaultroute
-EOF
-
-
-pon pptp  || pon pptp debug dump logfd 2 nodetach
-
 ```
 
 
-##### client on openwrt
+##### pptp client on openwrt
 
 - 配置/etc/config/network,添加以下内容
 
