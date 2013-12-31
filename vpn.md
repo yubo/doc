@@ -12,9 +12,8 @@ apt-get install xl2tpd
 
 - 配置
 
-  * /etc/xl2tpd/xl2tpd.conf
-
 ```
+#/etc/xl2tpd/xl2tpd.conf
 [global]
 [lns default]
 ip range = 172.16.0.2 - 172.16.255.255
@@ -26,11 +25,9 @@ name = gonzofamily.com
 ;ppp debug = yes
 pppoptfile = /etc/ppp/options.xl2tpd
 length bit = yes
-```
 
-  * /etc/ppp/options.xl2tpd
 
-```
+#/etc/ppp/options.xl2tpd
 ipcp-accept-local
 ipcp-accept-remote
 ms-dns 8.8.8.8
@@ -45,11 +42,8 @@ debug
 lock
 proxyarp
 connect-delay 5000
-```
 
-  * /etc/ppp/chap-secrets
-
-```
+#/etc/ppp/chap-secrets
 usr * pwd *
 ```
 
