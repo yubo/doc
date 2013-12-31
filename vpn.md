@@ -2,11 +2,17 @@
 
 ## l2tp
 
-##### server
+##### xl2tp server on ubuntu
 
-- install
+- 安装
 
-- /etc/xl2tpd/xl2tpd.conf
+```
+apt-get install xl2tpd
+```
+
+- 配置
+
+  * /etc/xl2tpd/xl2tpd.conf
 
 ```
 [global]
@@ -22,7 +28,7 @@ pppoptfile = /etc/ppp/options.xl2tpd
 length bit = yes
 ```
 
-- /etc/ppp/options.xl2tpd
+  * /etc/ppp/options.xl2tpd
 
 ```
 ipcp-accept-local
@@ -41,13 +47,13 @@ proxyarp
 connect-delay 5000
 ```
 
-- /etc/ppp/chap-secrets
+  * /etc/ppp/chap-secrets
 
 ```
 usr * pwd *
 ```
 
-- command
+- 运行
 
 ```
 /etc/init.d/xl2tpd restart
@@ -55,30 +61,34 @@ usr * pwd *
 xl2tpd -D
 ```
 
-- /etc/sysctl.conf
+- 其他
 
 ```
+#打开转发
+#/etc/sysctl.conf
 net.ipv4.ip_forward=1
-```
 
-- iptables
 
-```
+#配置iptables/SNAT
 #/etc/rc.local
 iptables -t nat -A POSTROUTING -s 172.16.0.0/16 -o eth1 -j MASQUERADE
 ```
 
-##### client
+```
+
+
+##### xl2tp client on openwrt
 
 - 配置.config后编译安装
 
 ```
-#.config
+#openwrt .config
 CONFIG_PACKAGE_kmod-l2tp=y
 CONFIG_PACKAGE_kmod-pppol2tp=y
 CONFIG_PACKAGE_xl2tpd=y
 CONFIG_PACKAGE_ppp-mod-pppol2tp=y
-#package/bcm-rls/components/opensource/linux/linux-2.6.36/bcm.config
+
+#linux .config
 CONFIG_PPPOL2TP=y
 CONFIG_L2TP=y
 ```
@@ -87,19 +97,11 @@ CONFIG_L2TP=y
 
 ```
 config interface 'vpn'
-        option ifname 'vpn1'
         option proto 'l2tp'             #与/lib/netifd/proto/l2tp.sh相关
         option username 'usr'           #l2tp拨号用户名
         option password 'pwd'           #l2tp拨号密码
         option server 'xxx.xxx.xxx.xxx' #l2tp拨号服务器域名或IP地址
 ```
-
-
-config interface 'vpn'
-        option proto 'l2tp'
-        option server '10.237.104.117'
-        option username 'usr'
-        option password 'pwd'
 
 
 - 配置/etc/config/firewall
@@ -121,7 +123,11 @@ config zone
 ifup vpn
 ifdown vpn
 #使l2tp可以开机自动拨号：
-/etc/init.d/xl2tpd enable```
+/etc/init.d/xl2tpd enable
+
+#ifdown vpn 后，如果不能上网，可重启wan口
+ifup wan
+```
 
 
 
@@ -132,7 +138,7 @@ ifdown vpn
 
 ## pptp
 
-##### server
+##### server on ubuntu
 
 #check gre
 
@@ -163,9 +169,9 @@ iptables -t nat -A POSTROUTING -s 172.16.0.0/16 -o eth0 -j MASQUERADE
 EOF
 
 
-----------------------------------------------------------
 
-##### clinet (ubuntu)
+
+##### clinet on ubuntu
 
 ```
 cat >> /etc/ppp/chap-secrets << 'EOF'
@@ -173,63 +179,56 @@ usr * pwd *
 EOF
 
 
-cat > /etc/ppp/peers/xq << 'EOF'
+cat > /etc/ppp/peers/pptp << 'EOF'
 pty "pptp 1.0.2.3 --nolaunchpppd"
 name usr
-remotename xq
+remotename pptp
 require-mppe-128
 mppe-stateful
 file /etc/ppp/options.pptp
-ipparam xq
+ipparam pptp
 defaultroute
 EOF
 
 
-pon xq  || pon xq debug dump logfd 2 nodetach
+pon pptp  || pon pptp debug dump logfd 2 nodetach
 
 ```
 
 
-- 编译
+##### client on openwrt
+
+- 配置/etc/config/network,添加以下内容
 
 ```
-#.config
-CONFIG_PACKAGE_pptp=y
-#package/bcm-rls/components/opensource/linux/linux-2.6.36/bcm.config
-CONFIG_NF_NAT_PPTP=m
-CONFIG_NF_CONNTRACK_PPTP=m
+config interface 'vpn'
+        option proto 'pptp'             #pptp
+        option username 'usr'           #pptp拨号用户名
+        option password 'pwd'           #pptp拨号密码
+        option server 'xxx.xxx.xxx.xxx' #pptp拨号服务器域名或IP地址
 ```
 
-- /etc/ppp/peers/myvpn(0600)
+
+- 配置/etc/config/firewall
 
 ```
-# written by pptpsetup
-pty "pptp 42.62.48.76 --nolaunchpppd"
-lock
-noauth
-nobsdcomp
-nodeflate
-name conan2
-remotename myvpn
-ipparam myvpn
-require-mppe-128
+config zone
+     option name 'wan'
+     option network 'wan vpn'
+     option input   REJECT
+     option forward REJECT
+     option output  ACCEPT
+     option masq    1
 ```
 
-- vi /etc/ppp/ip-up
-DG=10.237.104.1 #this is your default gateway
-/sbin/route del -host $5 dev ppp0 #we delete "stupid" pppd route
-/sbin/route add -host $5 gw $DG dev vlan1 #we add route to vpn-server in case you need it
-
-pppd call think debug dump logfd 2 updetach
-
-pppd call think updetach
-killall pppd
-
-
-## 资源
+- 使用vpn
 
 ```
-root@42.62.48.76 xiaomi9ijn0okm
+#手动开启/关闭vpn
+ifup vpn
+ifdown vpn
 
+#ifdown vpn 后，如果不能上网，可重启wan口
+ifup wan
 ```
 
