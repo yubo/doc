@@ -74,8 +74,6 @@ net.ipv4.ip_forward=1
 iptables -t nat -A POSTROUTING -s 172.16.0.0/16 -o eth1 -j MASQUERADE
 ```
 
-```
-
 
 ##### xl2tp client on openwrt
 
