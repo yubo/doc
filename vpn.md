@@ -114,7 +114,7 @@ config zone
      option masq    1
 ```
 
-- 使用vpn
+- 使用vpn/l2tp
 
 ```
 #手动开启/关闭vpn
@@ -136,7 +136,7 @@ ifup wan
 
 ## pptp
 
-##### server on ubuntu
+##### pptp server on ubuntu
 
 ```
 #check gre
@@ -194,7 +194,7 @@ config zone
      option masq    1
 ```
 
-- 使用vpn
+- 使用vpn/pptp
 
 ```
 #手动开启/关闭vpn
