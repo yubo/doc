@@ -1,8 +1,6 @@
 doc
 ===
 
-#document
-
 * [openstack][] 一个paas实现
 * [vpn][] l2tp,pptp server/client on ubuntu
 * [netoops][] 类似于一个网络版本的kmsg工具,可以将日志通过网络传输到远程的服务器上
