@@ -11,11 +11,11 @@ netoops类似于一个网络版本的kmsg工具,可以将日志通过网络传�
 
 ### 本机配置
 
-1\. 先安装好打完补丁的linux内核
+- 先安装好打完补丁的linux内核
 
-2\. 配置下面的脚本,然后执行
+- 配置下面的脚本,然后执行
 
-<pre>
+```
 #!/bin/sh
 
 #挂载 configfs
@@ -43,10 +43,10 @@ echo "eth1" > dev_name
 #开启netoops
 echo "1" > enabled
 echo "1" > /sys/kernel/netoops/netoops_record_oom
-</pre>
+```
 
 ## 远程日志服务器
-<pre>
+```
 yum install syslog-ng syslog-ng-libdbi
 
 echo >> /etc/syslog-ng/syslog-ng.conf << 'EOF'
@@ -56,14 +56,14 @@ log { source(netoops); destination(oopslog); };
 EOF
 
 service syslog-ng restart
-</pre>
+```
 
 重启syslog-ng服务，则以后收到的oops消息将记在/var/log/oops里
 
 ## 测试
 淘宝文档中的测试办法在redhat6.3内核中无法工作了,原因如下
 
-<pre>
+```
 enum kmsg_dump_reason {
     KMSG_DUMP_PANIC,
     KMSG_DUMP_OOPS,
@@ -79,12 +79,12 @@ enum kmsg_dump_reason {
 #./src/linux-2.6.32-279.el6/kernel/printk.c:1546:
      if ((reason > KMSG_DUMP_OOPS) && !always_kmsg_dump)
           return;
-</pre>
+```
 
 只有KMSG_DUMP_PANIC和KMSG_DUMP_OOPS级别的kmsg能够触发netoops
 可使用如下模块代码,让内核panic,进行测试.
 
-<pre>
+```
 ################kernel_pannic.c
 #include <linux/module.h>  
 #include <linux/kernel.h>  
@@ -113,14 +113,14 @@ all:
                  
 clean:
     make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
-</pre>
+```
 
 编译模块并加载,然后在日志接收机器上查看/var/log/oops日志是否更新了
 
-<pre>
+```
 make
 insmod kernel_pannic.ko
-</pre>
+```
 
 
 ## 资源
