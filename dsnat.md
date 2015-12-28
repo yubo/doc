@@ -122,7 +122,7 @@ rs     eth1    1.2.1.4      255.255.0.0     (rip)
 - 外网服务器可以访问lvs的lip
 
 
-![Alt text][dsnat_img]
+![dsnat img][dsnat_img]
 
 
 ### 网关的配置
@@ -293,6 +293,6 @@ virtual_server 0.0.0.0 0 {
 
 
 [FNAT]:http://kb.linuxvirtualserver.org/wiki/IPVS_FULLNAT_and_SYNPROXY
-[dsnat_img]:https://raw.github.com/xiaomi-sa/dsnat/master/dsnat-kernel-2.6.32-220.23.1.el6/dsnat.jpg
+[dsnat_img]:img/dsnat.jpg?raw=true
 [dsnat]:https://github.com/xiaomi-sa/dsnat/tree/master/dsnat-kernel-2.6.32-279.23.1.el6/dsnat-2.6.32-279.23.1.el6.xiaomi.noconfig.patch
 [dsnat_tools]:https://github.com/xiaomi-sa/dsnat/tree/master/dsnat_tools
