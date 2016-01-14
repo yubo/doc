@@ -49,8 +49,8 @@ sudo make install
 
   如果没有特殊说明，请使用工具包中的ffmpeg
   - 直接用ffmpeg中转
-    ffmpeg -re -i /opt/public/1.ts -vcodec h264 -acodec mp3 -f mpegts udp://127.0.0.1:12344
-    ffmpeg -re -i udp://127.0.0.1:12344 -vcodec copy -acodec copy -f mpegts udp://127.0.0.1:12345
+    * `ffmpeg -re -i /opt/public/1.ts -vcodec h264 -acodec mp3 -f mpegts udp://127.0.0.1:12344`
+    * `ffmpeg -re -i udp://127.0.0.1:12344 -vcodec copy -acodec copy -f mpegts udp://127.0.0.1:12345`
   - 模拟输入/转码
     * `while true ; do ffmpeg -re -i /opt/public/1.ts -vcodec h264 -acodec mp3 -f mpegts udp://127.0.0.1:12345 ; done`
 	* 
@@ -70,9 +70,21 @@ sudo make install
   - 待续
 
 ## 转码常用参数
+```shell
 ffmpeg -re -i /opt/public/1.ts -vcodec h264 -acodec mp3 -f mpegts -preset veryfast -vf scale=640*360  -crf 28  udp://172.16.0.115:12348
+```
 
-  - preset Current presets in descending order of speed are: ultrafast,superfast,veryfast, faster, fast, medium, slow, slower, veryslow, placebo
+  - preset Current presets in descending order of speed are: 
+    * `ultrafast`
+	* `superfast`
+	* `veryfast`
+	* `faster`
+	* `fast`
+	* `medium`
+	* `slow`
+	* `slower`
+	* `veryslow`
+	* `placebo
   - vf scale=640*360
   - crf  The range of the quantizer scale is 0-51: where 0 is lossless, 23 is default, and 51 is worst possible.
 
