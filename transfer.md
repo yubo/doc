@@ -2,14 +2,60 @@
 ...
 
 ## 安装
-#### transfer && collecter
-  - os: ubuntu12.04
-  - yum install -y cmake
-  - install gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12.tar.bz2
-  - edit ~/my-i.mx6/my-imx6-3035.conf
-  - cmake . && make
+先展开压缩包
+```shell
+tar xzvf release-yyyymmdd.tar.gz
+cd release-yyyymmdd
+````
+
+#### install transfer
+系统要求 ubuntu12.04 x86_64
+
+```shell
+#将x86_64/transfer.tar.gz解压至根目录
+$sudo tar xzvf x86_64/transfer.tar.gz -C /
+etc/config/transfer
+etc/init.d/transfer
+usr/sbin/transfer
+#将transfer服务更新至系统
+$sudo /usr/sbin/update-rc.d transfer defaults
+#卸载
+$sudo /usr/sbin/update-rc.d -f transfer remove 
+```
+
+#### install collecter
+系统要求 ubuntu12.04 arm
+
+```shell
+$sudo tar xzvf arm/collecter.tar.gz -C /
+usr/sbin/collecter
+etc/config/collecter.example
+etc/init.d/collecter
+#将transfer服务更新至系统
+$sudo /usr/sbin/update-rc.d collecter defaults
+#卸载
+$sudo /usr/sbin/update-rc.d -f collecter remove 
+```
+
+#### install keepalive
+系统要求 ubuntu12.04 arm
+
+```shell
+$sudo tar xzvf arm/keepalived.tar.gz -C /
+usr/sbin/keepalived
+usr/sbin/genhash
+etc/keepalived.master.conf
+etc/keepalived.slave.conf
+etc/init.d/keepalived
+#将transfer服务更新至系统
+$sudo /usr/sbin/update-rc.d keepalived defaults
+#卸载
+$sudo /usr/sbin/update-rc.d -f keepalived remove 
+```
 
 #### ffmpeg
+解压tools.tar.gz
+
 ```
 #install libx264
 sudo apt-get install -y libx264-dev yasm
@@ -56,18 +102,19 @@ sudo make install
 	* 
   - transfer
     * `transfer`
+	* `sudo service transfer start|stop|restart`
   - collecter
-    * 主模式 `collecter`
-    * 从模式 `collecter -s`
+    * `collecter`
+	* `sudo service collecter start|stop|restart`
   - 模拟接收
-    * `./ffplay -af 'volume=0.0' udp://127.0.0.1:12347`
+    * `ffplay -af 'volume=0.0' udp://127.0.0.1:12347`
   - 生成带标记帧的ts文件
     * `ffmpeg -re -i /tmp/in.mp4 -vcodec h264 -acodec mp3 -strict experimental  -f mpegts -vf scale=-1:540 /tmp/out.ts`
   - 多网卡情况下的多播路由设置
     * `sudo route add -net 224.0.0.0/8  vmnet1`
 
-## 高可用
-  - 待续
+## 高可用 keepalived
+  - 待整理
 
 ## 转码常用参数
 ```shell
@@ -84,7 +131,7 @@ ffmpeg -re -i /opt/public/1.ts -vcodec h264 -acodec mp3 -f mpegts -preset veryfa
 	* `slow`
 	* `slower`
 	* `veryslow`
-	* `placebo
+	* `placebo`
   - vf scale=640*360
   - crf  The range of the quantizer scale is 0-51: where 0 is lossless, 23 is default, and 51 is worst possible.
 
