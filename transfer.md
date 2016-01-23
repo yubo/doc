@@ -21,20 +21,24 @@ usr/sbin/transfer
 $sudo /usr/sbin/update-rc.d transfer defaults
 #卸载
 $sudo /usr/sbin/update-rc.d -f transfer remove 
+#运行
+$sudo service transfer start|stop|restart|status
 ```
 
-#### install collecter
+#### install collector
 系统要求 ubuntu12.04 arm
 
 ```shell
-$sudo tar xzvf arm/collecter.tar.gz -C /
-usr/sbin/collecter
-etc/config/collecter.example
-etc/init.d/collecter
+$sudo tar xzvf arm/collector.tar.gz -C /
+usr/sbin/collector
+etc/config/collector.example
+etc/init.d/collector
 #将transfer服务更新至系统
-$sudo /usr/sbin/update-rc.d collecter defaults
+$sudo /usr/sbin/update-rc.d collector defaults
 #卸载
-$sudo /usr/sbin/update-rc.d -f collecter remove 
+$sudo /usr/sbin/update-rc.d -f collector remove 
+#运行
+$sudo service collector start|stop|restart|status
 ```
 
 #### install keepalive
@@ -44,13 +48,19 @@ $sudo /usr/sbin/update-rc.d -f collecter remove
 $sudo tar xzvf arm/keepalived.tar.gz -C /
 usr/sbin/keepalived
 usr/sbin/genhash
-etc/keepalived.master.conf
-etc/keepalived.slave.conf
+etc/keepalived/
+etc/keepalived/backup.sh
+etc/keepalived/stop.sh
+etc/keepalived/fault.sh
+etc/keepalived/keepalived.conf
+etc/keepalived/master.sh
 etc/init.d/keepalived
 #将transfer服务更新至系统
 $sudo /usr/sbin/update-rc.d keepalived defaults
 #卸载
 $sudo /usr/sbin/update-rc.d -f keepalived remove 
+#运行
+$sudo service keepalived start|stop|restart|status
 ```
 
 #### ffmpeg
@@ -103,9 +113,9 @@ sudo make install
   - transfer
     * `transfer`
 	* `sudo service transfer start|stop|restart`
-  - collecter
-    * `collecter`
-	* `sudo service collecter start|stop|restart`
+  - collector
+    * `collector`
+	* `sudo service collector start|stop|restart`
   - 模拟接收
     * `ffplay -af 'volume=0.0' udp://127.0.0.1:12347`
   - 生成带标记帧的ts文件
@@ -114,7 +124,41 @@ sudo make install
     * `sudo route add -net 224.0.0.0/8  vmnet1`
 
 ## 高可用 keepalived
-  - 待整理
+
+配置文件是/etc/keepalived/keepalived.conf,修改配置后，需要重启服务`sudo service keepalived restart`
+
+```
+! Configuration File for keepalived
+
+vrrp_script chk_echo_port {
+    script "echo '</dev/tcp/127.0.0.1/12346' | /bin/bash" #检测本地的tcp 12346端口
+    interval 1
+	weight -2             #如果失败，权重-2
+}
+
+vrrp_instance VI_1 {      #广播域内的名称VI_1
+    state BACKUP
+    interface eth0        #这里填写内网（ha）广播接口设备名
+	track_interface {
+		eth0              #同上，如果eth0异常，会触发notify_fault
+	}
+    virtual_router_id 51
+    priority 100          #权重，backup的权重高于master时，会与master交换角色身份
+    advert_int 1
+    authentication {
+        auth_type PASS    #认证类型及口令，同一广播域内的相同id，口令须一致
+        auth_pass 1111
+    }
+    track_script {
+       chk_echo_port      #脚本检查，会影响权重
+    }
+    notify_backup "/etc/keepalived/backup.sh"  #切换至backup时触发
+    notify_master "/etc/keepalived/master.sh"  #切换至master时触发
+    notify_fault  "/etc/keepalived/fault.sh"   #网卡检查失败时触发
+    notify_stop   "/etc/keepalived/stop.sh"    #服务关闭时触发
+
+}
+```
 
 ## 转码常用参数
 ```shell
