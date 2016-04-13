@@ -33,7 +33,7 @@ Copyleft 2001 by D.H.Grand(nOBODY/Ginux), 2010 by Gasolin, 2015 by Ryan Wu, 2016
 
 本中文指南是基于原文 3.10 版以及 2010 年由 [Gasolin](https://github.com/gasolin) 所翻译版本的最新翻译；
 
-协助指出翻译问题，__请[发Issue](https://github.com/ryanhanwu/smartquestions/issues/new)，或直接[发Pull Request](https://github.com/ryanhanwu/smartquestions/compare/)给我。
+协助指出翻译问题，__请[发Issue](https://github.com/ryanhanwu/smartquestions/issues/new)，或直接[发Pull Request](https://github.com/ryanhanwu/smartquestions/compare/)给我。__
 
 ## [原文版本历史](https://github.com/ryanhanwu/smartquestions/blob/master/history.md)
 

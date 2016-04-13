@@ -7,6 +7,7 @@ doc
 * [dsnat](dsnat.md) 位于网络的网关位置,内网访问外网时,会将内网地址改成公网地址池中的ip,轮询选择
 * [CodingStyle](CodingStyle.md) 代码风格? 我该如何做?
 * [提问的智慧](smart-questions.md)
+* [如何成为黑客](hacker-howto.md)
 
 
 
