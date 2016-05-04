@@ -1,0 +1,8 @@
+mode: set
+github.com/yubo/doc/docs/golang/cover/size.go:3.25,4.9 1 1
+github.com/yubo/doc/docs/golang/cover/size.go:16.2,16.19 1 0
+github.com/yubo/doc/docs/golang/cover/size.go:5.2,6.20 1 1
+github.com/yubo/doc/docs/golang/cover/size.go:7.2,8.16 1 0
+github.com/yubo/doc/docs/golang/cover/size.go:9.2,10.17 1 1
+github.com/yubo/doc/docs/golang/cover/size.go:11.2,12.15 1 0
+github.com/yubo/doc/docs/golang/cover/size.go:13.2,14.16 1 0
