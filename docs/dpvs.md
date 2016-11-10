@@ -36,4 +36,4 @@ DATA PLANE VIRTUAL SERVER
 [dpdk_org]:http://dpdk.org
 [grog_guide]:http://dpdk.org/doc/guides/prog_guide
 [samples]:http://dpdk.org/doc/guides/sample_app_ug/index.html
-[dpvs_img]:https://cdn.rawgit.com/yubo/doc/master/docs/img/dpvs.svg
+[dpvs_img]:https://yubo.github.io/doc/img/dpvs.svg
