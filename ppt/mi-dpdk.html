@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      @import url(https://yubo.github.io/doc/css//remark.css);
+   </style>
+  </head>
+  <body>
+  <textarea id="source">
+name: inverse
+layout: true
+class: center, middle, inverse
+---
+#DPDK
+[@xiaomi.com]
+.footnote[sa-dev [yubo@xiaomi.com](mailto:yubo@xiaomi.com)]
+---
+
+## DPDK(Data Plane Development Dit)简介
+---
+
+layout: false
+.left-column[
+## What is it?
+]
+.right-column[
+DPDK is a set of libraries and drivers for fast packet processing. 
+
+It was designed to run on any processors. 
+
+The first supported CPU was Intel x86 and it is now extended to IBM Power 8, EZchip TILE-Gx and ARM. 
+
+It runs mostly in Linux userland. A FreeBSD port is available for a subset of DPDK features.
+]
+---
+
+.left-column[
+## What is it?
+## Main libraries
+]
+.right-column[
+- multicore framework
+
+- huge page memory
+
+- ring buffers
+
+- poll-mode drivers
+
+]
+---
+
+.left-column[
+## What is it?
+## Main libraries
+## Usage
+]
+
+.right-column[
+These libraries can be used to:
+
+- receive and send packets within the minimum number of CPU cycles (usually less than 80 cycles)
+
+- develop fast packet capture algorithms (tcpdump-like)
+
+- run third-party fast path stacks
+]
+---
+
+.left-column[
+## What is it?
+## Main libraries
+## Usage
+## What it is not
+]
+.right-column[
+DPDK is not a networking stack and does not provide functions such as Layer-3 forwarding, IPsec, firewalling, etc. Within the tree, however, various application examples are included to help developing such features.
+]
+---
+
+.left-column[
+## What is it?
+## Main libraries
+## Usage
+## What it is not
+## How
+]
+.right-column[
+- 避免上下文切换（中断/系统调用）
+
+  - 内存池/huge page
+
+  - poll-mode accesses the rx/tx descriptors directly without any interrupts
+
+- 解耦去锁(原子操作)
+
+  - ring buffers
+
+  - NUMA
+  
+  - 读写分离
+
+]
+---
+
+
+
+## dpdk在小米
+- 2015-03-15 ~ 2015-12-23 mi_iptraffic `丁冠军`
+
+- 2015-06-03 ~ 2015-09-24 porpoise/listener `喻波`
+
+- 2016-04-12 ~ 2016-10-17 dpvs `喻波,黄骜哲`
+---
+
+template: inverse
+## dpvs(Data Plane Virtual Server)简介
+---
+
+name: how
+.left-column[
+## What is it?
+]
+
+.right-column[
+基于[dpdk][dpdk_org]开发的类[lvs][lvs]负载均衡软件,并集成ospf协议
+
+对tcp/fullnat的转发，vs_in()成功转发一个报文的平均cpu开销在4500cycle左右，
+使用intel i7-4790的pc，单核理论最大值在0.85mpps左右
+]
+---
+<img src="https://yubo.github.io/doc/img/dpvs.svg" alt="Drawing" width="85%" />
+---
+
+## FEATURE
+* synproxy
+* fullnat(tcp/udp)
+  - ifa/vip/lip
+  - icmp, arp
+  - route
+* persistent
+* non-blocking concurrent
+* memory pool
+* vsadmin/keepalived support
+* ospf support
+* dpdk
+  - multicore framework
+  - huge page memory
+  - ring buffers
+  - poll-mode drivers
+---
+
+## TODO
+* drop entry/drop packet
+* checksum in hardware
+* IPv6 support
+* mtu check/ip fragmentation
+---
+
+## RESOURCES 
+* [http://dpdk.org][dpdk_org]
+* [http://dpdk.org/doc/guides/prog_guide][grog_guide]
+* [http://dpdk.org/doc/guides/sample_app_ug/index.html][samples]
+* source
+  - [git://dpdk.org/dpdk](http://dpdk.org/browse/dpdk)
+  - [git://dpdk.org/apps/pktgen-dpdk](http://dpdk.org/browse/apps/pktgen-dpdk/)
+---
+
+template: inverse
+## Thank You
+
+.footnote[sa-dev [yubo@xiaomi.com](mailto:yubo@xiaomi.com)]
+
+[lvs]:http://www.linuxvirtualserver.org/
+[dpdk_org]:http://dpdk.org
+[grog_guide]:http://dpdk.org/doc/guides/prog_guide
+[samples]:http://dpdk.org/doc/guides/sample_app_ug/index.html
+[dpvs_img]:https://yubo.github.io/doc/img/dpvs.svg
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
