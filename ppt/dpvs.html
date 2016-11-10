@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      @import url(https://yubo.github.io/doc/css/remark.css);
+   </style>
+  </head>
+  <body>
+  <textarea id="source">
+name: inverse
+layout: true
+class: center, middle, inverse
+---
+#DPVS
+.footnote[sa-dev [yubo@xiaomi.com](mailto:yubo@xiaomi.com)]
+---
+## dpvs(Data Plane Virtual Server)简介
+---
+
+layout: false
+.left-column[
+## What is it?
+]
+.right-column[
+基于[dpdk][dpdk_org]开发的类[lvs][lvs]负载均衡软件,并集成ospf协议
+
+对tcp/fullnat的转发，vs_in()成功转发一个报文的平均cpu开销在4500cycle左右，
+使用intel i7-4790的pc，单核理论最大值在0.85mpps左右
+]
+---
+
+.left-column[
+## What is it?
+## deploy
+]
+.right-column[
+<img src="https://yubo.github.io/doc/img/dpvs-deploy.svg" alt="Drawing" width="80%" />
+]
+---
+
+.left-column[
+## What is it?
+## deploy
+## topology
+]
+.right-column[
+<img src="https://yubo.github.io/doc/img/dpvs.svg" alt="Drawing" width="100%" />
+]
+---
+
+template: inverse
+## 实现
+---
+
+name: how
+.left-column[
+## runtime
+]
+
+.right-column[
+- interface 
+
+- icmp, arp
+
+- route
+
+- syncookie/tcp
+]
+---
+
+.left-column[
+## runtime
+## LVS
+]
+
+.right-column[
+- persistent
+
+- synproxy
+
+- fullnat
+
+- schedulers
+
+- tcp/udp
+
+- jsonrpcd
+]
+---
+
+.left-column[
+## runtime
+## LVS
+## ROUTE
+]
+
+.right-column[
+- IGP(Interios Gateway Protoco)内部网关协议
+
+  - 距离向量路由协议(RIP/IGRP)
+
+  - 链路状态路由协议(__OSPF__/IS-IS)
+
+  - 高级距离矢量路由协议(EIGRP)
+
+- EGP/BGP(Exterior/Border Gateway Protocol)外部／边界网关协议
+]
+---
+
+
+.left-column[
+## runtime
+## LVS
+## ROUTE
+]
+
+.right-column[
+使用ospf等价多路径特性，将相同vip的流量做hash分流，实现lvs集群。
+ospf的实现移植自[bird.network.cz](http://bird.network.cz/)
+
+- [github.com/yubo/bird/tree/dpvs][dpvs] bird for dpvs
+
+- add proto/dpvs support
+  - interface
+
+  - interface address
+
+  - direct route
+
+  - lpm support
+
+- change poll to libubox/epoll([github.com/yubo/libubox][libubox])
+
+- use linux/list.h
+
+- use cmake
+]
+---
+
+
+.left-column[
+## runtime
+## LVS
+## ROUTE
+## DPDK
+]
+
+.right-column[
+- multicore framework
+
+- huge page memory
+
+- ring buffers
+
+- poll-mode drivers
+]
+---
+
+.left-column[
+## runtime
+## LVS
+## ROUTE
+## DPDK
+## controller
+]
+
+.right-column[
+- ipvsadm 
+
+- keepalived
+
+- libipvs
+
+  - NETLINK
+
+  - SOCK_RAW 
+
+  - JSON-RPC([github.com/yubo/libubox][libubox])
+
+]
+---
+
+
+
+.left-column[
+## runtime
+## LVS
+## ROUTE
+## DPDK
+## controller
+## other
+]
+
+.right-column[
+- non-blocking concurrent
+
+- memory pool
+
+- config file parser(bison/flex)
+
+- package(rpm, deb) build support
+]
+---
+
+## TODO
+- drop entry/drop packet
+
+- checksum in hardware
+
+- IPv6 support
+
+- mtu check/ip fragmentation
+---
+
+## RESOURCES 
+- [http://dpdk.org][dpdk_org]
+
+- [http://dpdk.org/doc/guides/prog_guide][grog_guide]
+
+- [http://dpdk.org/doc/guides/sample_app_ug/index.html][samples]
+
+- source
+
+  - [git://dpdk.org/dpdk](http://dpdk.org/browse/dpdk)
+
+  - [git://dpdk.org/apps/pktgen-dpdk](http://dpdk.org/browse/apps/pktgen-dpdk/)
+
+  - [http://bird.network.cz](http://bird.network.cz/)
+
+  - [https://github.com/yubo/bird/tree/dpvs][dpvs]
+
+  - [https://github.com/yubo/libubox][libubox]
+---
+
+template: inverse
+## Thank You
+
+.footnote[sa-dev [yubo@xiaomi.com](mailto:yubo@xiaomi.com)]
+
+[lvs]:http://www.linuxvirtualserver.org/
+[dpdk_org]:http://dpdk.org
+[grog_guide]:http://dpdk.org/doc/guides/prog_guide
+[samples]:http://dpdk.org/doc/guides/sample_app_ug/index.html
+[dpvs_img]:https://yubo.github.io/doc/img/dpvs.svg
+[libubox]:https://github.com/yubo/libubox
+[dpvs]:https://github.com/yubo/bird/tree/dpvs
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

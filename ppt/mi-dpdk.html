@@ -36,6 +36,26 @@ It was designed to run on any processors.
 The first supported CPU was Intel x86 and it is now extended to IBM Power 8, EZchip TILE-Gx and ARM. 
 
 It runs mostly in Linux userland. A FreeBSD port is available for a subset of DPDK features.
+
+```shell
+#linux -> remote linux
+$ping 10.235.99.38
+PING 10.235.99.38 (10.235.99.38) 56(84) bytes of data.
+64 bytes from 10.235.99.38: icmp_seq=1 ttl=64 time=0.425 ms
+64 bytes from 10.235.99.38: icmp_seq=2 ttl=64 time=0.366 ms
+64 bytes from 10.235.99.38: icmp_seq=3 ttl=64 time=0.469 ms
+64 bytes from 10.235.99.38: icmp_seq=4 ttl=64 time=0.344 ms
+64 bytes from 10.235.99.38: icmp_seq=5 ttl=64 time=0.350 ms
+
+#linux -> remote dpdk
+$ping 1.1.1.1
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=64 time=0.108 ms
+64 bytes from 1.1.1.1: icmp_seq=2 ttl=64 time=0.163 ms
+64 bytes from 1.1.1.1: icmp_seq=3 ttl=64 time=0.083 ms
+64 bytes from 1.1.1.1: icmp_seq=4 ttl=64 time=0.102 ms
+64 bytes from 1.1.1.1: icmp_seq=5 ttl=64 time=0.112 ms
+```
 ]
 ---
 
@@ -88,23 +108,28 @@ DPDK is not a networking stack and does not provide functions such as Layer-3 fo
 ## Main libraries
 ## Usage
 ## What it is not
-## How
+## Tips
 ]
 .right-column[
 - 避免上下文切换（中断/系统调用）
 
-  - 内存池/huge page
+  - memory pool
 
   - poll-mode accesses the rx/tx descriptors directly without any interrupts
 
-- 解耦去锁(原子操作)
+- 解耦去锁
 
   - ring buffers
-
-  - NUMA
   
-  - 读写分离
+  - Read/Write Splitting
 
+  - atomic
+
+- other
+
+  - huge page
+
+  - NUMA 
 ]
 ---
 
@@ -138,36 +163,52 @@ name: how
 ---
 
 ## FEATURE
-* synproxy
-* fullnat(tcp/udp)
-  - ifa/vip/lip
+- runtime
+  - interface
   - icmp, arp
   - route
-* persistent
-* non-blocking concurrent
-* memory pool
-* vsadmin/keepalived support
-* ospf support
-* dpdk
+  - syncookie/tcp
+- lvs
+  - persistent
+  - synproxy
+  - fullnat
+  - schedulers
+  - tcp/udp
+- ospf support
+- dpdk
   - multicore framework
   - huge page memory
   - ring buffers
   - poll-mode drivers
+- other
+  - non-blocking concurrent
+  - memory pool
+  - ipvsdm/keepalived support
+  - config file parser(bison/flex)
+  - package(rpm, deb) build support
 ---
 
 ## TODO
-* drop entry/drop packet
-* checksum in hardware
-* IPv6 support
-* mtu check/ip fragmentation
+- drop entry/drop packet
+
+- checksum in hardware
+
+- IPv6 support
+
+- mtu check/ip fragmentation
 ---
 
 ## RESOURCES 
-* [http://dpdk.org][dpdk_org]
-* [http://dpdk.org/doc/guides/prog_guide][grog_guide]
-* [http://dpdk.org/doc/guides/sample_app_ug/index.html][samples]
-* source
+- [http://dpdk.org][dpdk_org]
+
+- [http://dpdk.org/doc/guides/prog_guide][grog_guide]
+
+- [http://dpdk.org/doc/guides/sample_app_ug/index.html][samples]
+
+- source
+
   - [git://dpdk.org/dpdk](http://dpdk.org/browse/dpdk)
+
   - [git://dpdk.org/apps/pktgen-dpdk](http://dpdk.org/browse/apps/pktgen-dpdk/)
 ---
 
