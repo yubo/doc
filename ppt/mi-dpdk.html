@@ -21,7 +21,7 @@ class: center, middle, inverse
 .footnote[sa-dev [yubo@xiaomi.com](mailto:yubo@xiaomi.com)]
 ---
 
-## DPDK(Data Plane Development Dit)简介
+## DPDK(Data Plane Development Kit)简介
 ---
 
 layout: false
@@ -89,6 +89,14 @@ These libraries can be used to:
 - develop fast packet capture algorithms (tcpdump-like)
 
 - run third-party fast path stacks
+
+```shell
+#10 Gigabit Ethernet(10,000,000,000bps/14,880,952pps)
+
+10,000,000,000(bps) / ((7+1+64+12)*8)(b/p) = 14,880,952 pps
+
+14,880,952 * 80 hz = 1,190,476,190hz = 1.108GHz
+```
 ]
 ---
 
@@ -99,7 +107,13 @@ These libraries can be used to:
 ## What it is not
 ]
 .right-column[
-DPDK is not a networking stack and does not provide functions such as Layer-3 forwarding, IPsec, firewalling, etc. Within the tree, however, various application examples are included to help developing such features.
+DPDK is not a networking stack and does not provide
+
+functions such as Layer-3 forwarding, IPsec, firewalling,
+
+etc. Within the tree, however, various application
+
+examples are included to help developing such features.
 ]
 ---
 
@@ -198,18 +212,16 @@ name: how
 - mtu check/ip fragmentation
 ---
 
-## RESOURCES 
+## References
+- [https://www.kernel.org/doc/htmldocs/uio-howto/index.html](https://www.kernel.org/doc/htmldocs/uio-howto/index.html)
+- [https://www.ibm.com/developerworks/cn/linux/kernel/interrupt/](https://www.ibm.com/developerworks/cn/linux/kernel/interrupt/)
 - [http://dpdk.org][dpdk_org]
-
 - [http://dpdk.org/doc/guides/prog_guide][grog_guide]
-
 - [http://dpdk.org/doc/guides/sample_app_ug/index.html][samples]
 
-- source
-
-  - [git://dpdk.org/dpdk](http://dpdk.org/browse/dpdk)
-
-  - [git://dpdk.org/apps/pktgen-dpdk](http://dpdk.org/browse/apps/pktgen-dpdk/)
+## Resources
+- [git://dpdk.org/dpdk](http://dpdk.org/browse/dpdk)
+- [git://dpdk.org/apps/pktgen-dpdk](http://dpdk.org/browse/apps/pktgen-dpdk/)
 ---
 
 template: inverse
@@ -224,10 +236,7 @@ template: inverse
 [dpvs_img]:https://yubo.github.io/doc/img/dpvs.svg
 
     </textarea>
-    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
-    </script>
-    <script>
-      var slideshow = remark.create();
-    </script>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"> </script>
+    <script> var slideshow = remark.create(); </script>
   </body>
 </html>

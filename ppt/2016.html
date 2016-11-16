@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>dpvs</title>
+    <title>yubo@2016</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -16,10 +16,54 @@ name: inverse
 layout: true
 class: center, middle, inverse
 ---
-#DPVS
+#2016工作总结
 .footnote[sa-dev [yubo@xiaomi.com](mailto:yubo@xiaomi.com)]
 ---
-## dpvs(Data Plane Virtual Server)简介
+
+layout: false
+.left-column[
+## UAQ
+]
+.right-column[
+
+2015-8-3 ~ 2016-04-08
+
+- client
+
+  * xiaomi router(r1d/r1c)
+
+  * android
+
+  * linux server
+
+- server
+
+  * task manger(linux x86)
+]
+---
+
+layout: false
+.left-column[
+## UAQ
+## VPC
+]
+.right-column[
+
+2016-02-22 ~ 2016-04-08
+
+- calico containers
+
+- calico bird
+
+- etcd
+
+- confd
+]
+---
+
+template: inverse
+## dpvs(Data Plane Virtual Server)
+[2016-04 ~ 2016-10]
 ---
 
 layout: false
@@ -207,34 +251,30 @@ ospf的实现移植自[bird.network.cz](http://bird.network.cz/)
 ]
 ---
 
-## TODO
-- drop entry/drop packet
-
-- checksum in hardware
-
-- IPv6 support
-
-- mtu check/ip fragmentation
+## 2017
+- dpvs
+  * test
+  * drop entry/drop packet
+  * checksum in hardware
+  * IPv6 support
+  * mtu check/ip fragmentation
+- Software Defined Networking 
+- falcon
+  * grpah disk i/o
+  * judge
 ---
 
-## RESOURCES 
+## References
 - [http://dpdk.org][dpdk_org]
-
 - [http://dpdk.org/doc/guides/prog_guide][grog_guide]
-
 - [http://dpdk.org/doc/guides/sample_app_ug/index.html][samples]
+- [http://bird.network.cz](http://bird.network.cz/)
 
-- source
-
-  * [git://dpdk.org/dpdk](http://dpdk.org/browse/dpdk)
-
-  * [git://dpdk.org/apps/pktgen-dpdk](http://dpdk.org/browse/apps/pktgen-dpdk/)
-
-  * [http://bird.network.cz](http://bird.network.cz/)
-
-  * [https://github.com/yubo/bird/tree/dpvs][dpvs]
-
-  * [https://github.com/yubo/libubox][libubox]
+## Resources
+- [git://dpdk.org/dpdk](http://dpdk.org/browse/dpdk)
+- [git://dpdk.org/apps/pktgen-dpdk](http://dpdk.org/browse/apps/pktgen-dpdk/)
+- [https://github.com/yubo/bird/tree/dpvs][dpvs]
+- [https://github.com/yubo/libubox][libubox]
 ---
 
 template: inverse
@@ -251,10 +291,7 @@ template: inverse
 [dpvs]:https://github.com/yubo/bird/tree/dpvs
 
     </textarea>
-    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
-    </script>
-    <script>
-      var slideshow = remark.create();
-    </script>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"> </script>
+    <script> var slideshow = remark.create(); </script>
   </body>
 </html>
