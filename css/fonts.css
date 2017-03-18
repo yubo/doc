@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'Yanone Kaffeesatz';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'), url(fonts/YDAoLskQQ5MOAgvHUQCcLbvy90DtE_Pg_qiF9bHvTzw.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Droid Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Droid Serif'), local('DroidSerif'), url(fonts/0AKsP294HTD-nvJgucYTaJ0EAVxt0G0biEntp43Qt6E.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Droid Serif';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Droid Serif Bold'), local('DroidSerif-Bold'), url(fonts/QQt14e8dY39u-eYBZmppwZ_TkvowlIOtbR7ePgFOpF4.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Droid Serif';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Droid Serif Italic'), local('DroidSerif-Italic'), url(fonts/cj2hUnSRBhwmSPr9kS589-LrC4Du4e_yfTJ8Ol60xk0.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu Mono'), local('UbuntuMono-Regular'), url(fonts/ViZhet7Ak-LRXZMXzuAfkZ0EAVxt0G0biEntp43Qt6E.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Ubuntu Mono Bold'), local('UbuntuMono-Bold'), url(fonts/ceqTZGKHipo8pJj4molytp_TkvowlIOtbR7ePgFOpF4.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Ubuntu Mono Italic'), local('UbuntuMono-Italic'), url(fonts/KAKuHXAHZOeECOWAHsRKA-LrC4Du4e_yfTJ8Ol60xk0.ttf) format('truetype');
+}
