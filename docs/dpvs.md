@@ -4,7 +4,7 @@ DATA PLANE VIRTUAL SERVER
 
 基于[dpdk][dpdk_org]开发的类[lvs][lvs]负载均衡软件
 
-![][dpvs_img]
+![](img/dpvs.png)
 
 ## 支持的功能
 
@@ -36,4 +36,3 @@ DATA PLANE VIRTUAL SERVER
 [dpdk_org]:http://dpdk.org
 [grog_guide]:http://dpdk.org/doc/guides/prog_guide
 [samples]:http://dpdk.org/doc/guides/sample_app_ug/index.html
-[dpvs_img]:https://yubo.github.io/doc/img/dpvs.svg
