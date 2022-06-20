@@ -54,6 +54,6 @@ ios，android 手机端解码器(ffmpeg)，以及视频渲染 (OpenGL/OpenAL) �
 
 ## 期刊文章
 
-Xuanhua Shi, Hai Jin, Hongbo Jiang, Xiaodong Pan, and Bo Yu, "Toward Scalable Web Systems on Multicore Clusters: Making Use of Virtual Machines", Journal of Supercomputing, 61(1):27~45, 2012 http://grid.hust.edu.cn/xhshi/paper/VM-web-JoS.pdf
+Xuanhua Shi, Hai Jin, Hongbo Jiang, Xiaodong Pan, and Bo Yu, "Toward Scalable Web Systems on Multicore Clusters: Making Use of Virtual Machines", Journal of Supercomputing, 61(1):27~45, 2012 https://www.researchgate.net/publication/225457219_Toward_scalable_Web_systems_on_multicore_clusters_Making_use_of_virtual_machines
 
-Xuanhua Shi, Hongbo Jiang, Ligang He, Hai Jin, Chonggang Wang, Bo Yu, Fei Wang, "EAPAC: An Enhanced Application Placement Framework for Data Centers", The 14th IEEE International Conference on Computational Science and Engineering, 201 http://grid.hust.edu.cn/xhshi/paper/EAPAC-CSE.pdf 
+Xuanhua Shi, Hongbo Jiang, Ligang He, Hai Jin, Chonggang Wang, Bo Yu, Fei Wang, "EAPAC: An Enhanced Application Placement Framework for Data Centers", The 14th IEEE International Conference on Computational Science and Engineering, 201 https://www.researchgate.net/publication/220775506_EAPAC_An_Enhanced_Application_Placement_Framework_for_Data_Centers
